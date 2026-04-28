@@ -6,12 +6,12 @@ import gettext
 import time
 import threading
 
-# Internationalization setup
+
 gettext.bindtextdomain('cleaner', 'locale')
 gettext.textdomain('cleaner')
 _ = gettext.gettext
 
-# Translations dictionary
+
 translations = {
     'English': {
         'title': 'PC Cleaner Pro',
@@ -62,7 +62,7 @@ class PCCleaner:
         self.root = root
         self.current_lang = 'English'
 
-        # Set theme and styles
+       
         style = ttk.Style()
         style.theme_use('clam')
         style.configure('TButton', font=('Arial', 10, 'bold'), padding=6)
@@ -75,7 +75,7 @@ class PCCleaner:
         self.root.minsize(500, 400)
         self.root.title(translations[self.current_lang]['title'])
 
-        # Menu bar
+        
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
 
@@ -87,11 +87,11 @@ class PCCleaner:
         menubar.add_cascade(label=translations[self.current_lang]['help'], menu=help_menu)
         help_menu.add_command(label=translations[self.current_lang]['about'], command=self.show_about)
 
-        # Main frame
+       
         main_frame = ttk.Frame(root, padding=10)
         main_frame.pack(fill='both', expand=True)
 
-        # Language selection frame
+        
         lang_frame = ttk.LabelFrame(main_frame, text=translations[self.current_lang]['lang'], padding=10)
         lang_frame.pack(fill='x', pady=5)
         self.lang_combo = ttk.Combobox(lang_frame, values=list(translations.keys()), state='readonly', font=('Arial', 10))
@@ -99,7 +99,7 @@ class PCCleaner:
         self.lang_combo.pack(side='left')
         self.lang_combo.bind('<<ComboboxSelected>>', self.change_lang)
 
-        # Options frame
+       
         options_frame = ttk.LabelFrame(main_frame, text=translations[self.current_lang]['select'], padding=10)
         options_frame.pack(fill='x', pady=5)
 
@@ -120,7 +120,7 @@ class PCCleaner:
         self.recycle_check = ttk.Checkbutton(options_frame, text=translations[self.current_lang]['recycle'], variable=self.recycle_var)
         self.recycle_check.pack(anchor='w', pady=2)
 
-        # Buttons frame
+        
         buttons_frame = ttk.Frame(main_frame)
         buttons_frame.pack(pady=10)
 
@@ -130,14 +130,14 @@ class PCCleaner:
         self.clean_button = ttk.Button(buttons_frame, text=translations[self.current_lang]['clean'], command=self.start_clean, state='disabled')
         self.clean_button.pack(side='left', padx=10)
 
-        # Progress frame
+        
         progress_frame = ttk.Frame(main_frame)
         progress_frame.pack(fill='x', pady=5)
 
         self.progress = ttk.Progressbar(progress_frame, orient='horizontal', mode='determinate')
         self.progress.pack(fill='x')
 
-        # Status frame
+        
         status_frame = ttk.Frame(main_frame)
         status_frame.pack(fill='x', pady=5)
 
@@ -153,16 +153,16 @@ class PCCleaner:
 
     def update_texts(self):
         self.root.title(translations[self.current_lang]['title'])
-        # Update menu
+
         self.root.config(menu=self.create_menu())
-        # Update frames
+
         for child in self.root.winfo_children():
             if isinstance(child, ttk.LabelFrame):
                 if 'lang' in child.cget('text').lower() or 'language' in child.cget('text').lower():
                     child.config(text=translations[self.current_lang]['lang'])
                 elif 'select' in child.cget('text').lower():
                     child.config(text=translations[self.current_lang]['select'])
-        # Update widgets
+        
         self.temp_check.config(text=translations[self.current_lang]['temp'])
         self.cache_check.config(text=translations[self.current_lang]['cache'])
         self.downloads_check.config(text=translations[self.current_lang]['downloads'])
@@ -195,7 +195,7 @@ class PCCleaner:
                 if os.path.isfile(file_path):
                     total_space += os.path.getsize(file_path)
         if self.cache_var.get():
-            # Placeholder
+            
             pass
         if self.downloads_var.get():
             downloads_dir = os.path.join(os.path.expanduser('~'), 'Downloads')
@@ -205,7 +205,7 @@ class PCCleaner:
                     if os.path.isfile(file_path) and time.time() - os.path.getmtime(file_path) > 30*24*3600:
                         total_space += os.path.getsize(file_path)
         if self.recycle_var.get():
-            # Placeholder for recycle bin size
+
             pass
         total_mb = total_space / (1024*1024)
         self.space_label.config(text=translations[self.current_lang]['space'].format(round(total_mb, 2)))
@@ -240,7 +240,7 @@ class PCCleaner:
             self.root.update()
 
         if self.cache_var.get():
-            # Placeholder
+            
             current += step
             self.progress['value'] = current
             self.root.update()
@@ -263,8 +263,7 @@ class PCCleaner:
             self.root.update()
 
         if self.recycle_var.get():
-            # Placeholder for emptying recycle bin
-            # On Windows, could use subprocess to run 'rd /s /q C:\$Recycle.Bin' but careful
+            
             current += step
             self.progress['value'] = current
             self.root.update()
